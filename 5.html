@@ -1,16 +1,72 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ejercicio 5</title>
-</head>
-<body>
-    <article>
-        <h1>Listado de usuarios</h1>
-        <p>Queremos mostrar el listado de usarios que existen en nuestro sistema y que al hacer click sobre uno de ellos nos muestre la información del usuario.</p>
-        <p>Para obtener el listado de usuarios el backend nos ha proporcionado el siguiente endpoint <a href="https://jsonplaceholder.typicode.com/users" target="_blank">Users</a>.</p>
-    </article>
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Ejercicio 5</title>
+    </head>
+    <body>
+        <article>
+            <h1>Listado de usuarios</h1>
+            <p>Queremos mostrar el listado de usarios que existen en nuestro sistema y que al hacer click sobre uno de ellos nos muestre la información del usuario.</p>
+            <p>Para obtener el listado de usuarios el backend nos ha proporcionado el siguiente endpoint <a href="https://jsonplaceholder.typicode.com/users" target="_blank">Users</a>.</p>
+        </article>
+
+
+        <h1>Usuarios</h1>
+        <!-- table for showing data -->
+        <table id="usuarios"></table>
+
+
+        <script>
+
+            const api_url ="https://jsonplaceholder.typicode.com/users";
+            let userData;
+            // Definimos una funcipon asincrona para la peticion
+            async function getapi(url) {
+    
+                // Guardamos response
+                const response = await fetch(url);
+    
+                // pasamos la info a JSON y guardamos en data
+                var data = await response.json();
+                userData = data;
+                show(data);
+            }
+            
+            // Llamamos la función getapi
+            getapi(api_url);  
+
+            // Función para definir la tabla
+            function show(data) {
+                let tab = 
+                `<tr>
+                    <th>Nombre</th>
+                    <th>Usuario</th>
+                    <th>Correo</th>
+                    <th>Ver info</th>
+                </tr>`;
+    
+            // Loop para acceder a la data
+                for (let r of data) {
+                    tab += `<tr> 
+                        <td><a id="myLink${r.id}" href="#" onclick="abrirModal(${r.id})">${r.name}</a> </td>
+                        <td>${r.username}</td>
+                        <td>${r.email}</td> 
+                        <td><button value="${r.id}" onclick="abrirModal(${r.id})">Ver info</button></td>          
+                    </tr>`;
+                }
+
+            // Seteamos 
+            document.getElementById("usuarios").innerHTML = tab;
+            }
+
+            //Funcion para abrir modal
+            function abrirModal(id){
+                alert(JSON.stringify(userData[id-1]))
+            }
+        </script>
+    </body>
+
 </html>
